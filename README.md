@@ -6,41 +6,43 @@ the moon rotate in place. Runs in a terminal, entirely offline.
 
 ![the animation](docs/starry-night.gif)
 
+## Run it
+
 ```bash
 python3 -m pip install -r requirements.txt
 python3 run.py
 ```
 
-## The approach
+No options. Ctrl+C to quit. It fills whatever window you give it, so a
+bigger window with a smaller font gets you more detail.
 
-Most text-art converters map brightness onto a ramp of characters. That
-captures tone but throws away what makes a Van Gogh a Van Gogh: the paint
-has *direction*. So the local orientation of every brushstroke is measured
-from the pixels first, and characters are chosen to lie *along* it —
-horizontal marks where the paint runs flat, slashes on the diagonals,
-rounded glyphs where there's no direction at all, which is exactly where
-the stars are.
+## How it works
 
-Tone is split between ink and colour. A cell's apparent brightness is ink
-coverage times colour, so encoding brightness in both squares the contrast
-and leaves the lettering sitting on top of the picture. Instead the ink
-each character lays down is measured from the font, the glyph carries part
-of the range, and the colour supplies exactly the remainder — so the two
-multiply back to the painting and the text dissolves into it.
+The painting is stored inside the source as compressed data, so there is
+nothing to download.
 
-Motion is a warp of where each cell *samples from*, never of anything
-drawn. Vortices turn the sky, a current drifts across it, and every bright
-disc spins in place. Angles are functions of elapsed time rather than
-accumulated steps, so it runs for hours without drifting.
+**Picking the characters.** Instead of mapping brightness to a ramp of
+characters, the code measures which way the paint is running at each point
+(Sobel gradients into a structure tensor) and picks a character that leans
+the same way — `-` for flat strokes, `/` and `\` on diagonals, `|` for
+uprights, and round ones like `o` and `0` where there is no clear
+direction, which is where the stars are.
 
-The painting lives inside the source as compressed data — nothing to
-download, no image on disk.
+**Brightness.** How bright a cell looks is roughly how much ink the
+character lays down times its colour. The ink each character uses is
+measured from the font once, then the colour is worked out to fill in the
+rest of the brightness. That keeps the characters from standing out as a
+layer on top of the picture.
 
-## Detail
+**Movement.** Nothing is drawn moving. Each frame just samples the
+painting from slightly different coordinates — a few vortices rotate the
+sky, a slow current drifts across it, and each bright disc spins in place.
+The angles come from elapsed time rather than adding up per frame, so it
+never drifts out of shape.
 
-One character is one pixel of the result, so the character count is the
-resolution. Smaller font and a bigger window is the only lever; `--info`
-reports where a given terminal stands.
+**Speed.** Only the cells that actually changed get redrawn each frame,
+and colours are rounded so tiny changes don't count as a change. Frame
+rate is picked from the window size.
 
 ## Credit
 
