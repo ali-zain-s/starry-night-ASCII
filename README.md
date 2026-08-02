@@ -18,7 +18,7 @@ Use Ctrl+C to quit.
 It fills whatever window you give it, so a
 bigger window with a smaller font gets you more detail.
 
-## How it works
+## Implementation
 
 The painting is stored directly in the program and rendered as **ASCII** art, 
 so nothing needs to be downloaded. Instead of choosing ASCII characters only 
