@@ -1,7 +1,7 @@
-# Starry Night, Rendered in Characters
+# Starry Night - ASCII Art Rendereding 
 
 Van Gogh's *The Starry Night* redrawn as thousands of coloured characters
-and set in motion — the sky drifts, the swirls turn, and every star and
+and set in motion while the sky drifts, the swirls turn, and every star and
 the moon rotate in place. Runs in a terminal, entirely offline.
 
 ![the animation](docs/starry-night.gif)
