@@ -1,2 +1,6 @@
+# Runtime needs only numpy.
 numpy>=1.24
+
+# Optional: enables --image (high-detail inline rendering) and the dev
+# tools in tools/. Text mode works without it.
 Pillow>=10.0
